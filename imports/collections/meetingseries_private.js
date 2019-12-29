@@ -12,7 +12,7 @@ if (Meteor.isServer) {
     // this will publish a light-weighted overview of the meeting series, necessary for the meeting series list
     Meteor.publish('meetingSeriesOverview', function meetingSeriesPublication() {
         return MeetingSeriesSchema.find(
-            {visibleFor: {$in: [this.userId]}},
+            {$or:[{visibleFor: {$in: [this.userId]}},{isPublic: true}]},
             {
                 fields: {
                     'project' : 1,
@@ -31,7 +31,7 @@ if (Meteor.isServer) {
     Meteor.publish('meetingSeriesDetails', function meetingSeriesPublication(meetingSeriesId) {
         if (meetingSeriesId) {
             return MeetingSeriesSchema.find(
-                { $and: [{visibleFor: {$in: [this.userId]}}, {_id: meetingSeriesId}]});
+                { $and: [{$or:[{visibleFor: {$in: [this.userId]}},{isPublic: true}]}, {_id: meetingSeriesId}]});
         }
         
         return this.ready();

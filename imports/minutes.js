@@ -56,13 +56,13 @@ export class Minutes {
     }
 
     // method
-    static async syncVisibility(parentSeriesID, visibleForArray) {
-        return Meteor.callPromise('minutes.syncVisibilityAndParticipants', parentSeriesID, visibleForArray);
+    static async syncVisibility(parentSeriesID, visibleForArray, isPublicBool) {
+        return Meteor.callPromise('minutes.syncVisibilityAndParticipants', parentSeriesID, visibleForArray, isPublicBool);
     }
 
-    static updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(parentSeriesID, visibleForArray) {
+    static updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(parentSeriesID, visibleForArray, isPublicBool) {
         if (MinutesSchema.find({meetingSeries_id: parentSeriesID}).count() > 0) {
-            MinutesSchema.update({meetingSeries_id: parentSeriesID}, {$set: {visibleFor: visibleForArray}}, {multi: true});
+            MinutesSchema.update({meetingSeries_id: parentSeriesID}, {$set: {visibleFor: visibleForArray, isPublic: isPublicBool}}, {multi: true});
 
             // add missing participants to non-finalized meetings
             MinutesSchema.getCollection().find({meetingSeries_id: parentSeriesID}).forEach (min => {

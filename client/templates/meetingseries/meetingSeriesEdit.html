@@ -36,6 +36,13 @@
                                             <label class="control-label" for="id_meetingname">Meeting Name</label>
                                             <input class="form-control" id="id_meetingname" type="text" value="{{this.name}}" required
                                                    data-error-msg="Please enter a valid name for the meeting series" autocomplete="off">
+
+                                            <div class="checkbox" id="publicChange">
+                                                <label id="labelPublicChange">
+                                                    <input type="checkbox" class="checkbox" checked="{{this.isPublic}}" id="id_meetingpublic">
+                                                    <span>Make this meeting public</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

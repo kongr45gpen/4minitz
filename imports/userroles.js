@@ -99,9 +99,14 @@ export class UserRoles {
         const currentRole = this.currentRoleFor (aMeetingSeriesID);
         return (currentRole && currentRole <= UserRoles.USERROLES.Informed);
     }
+
+    isPublic(aMeetingSeriesID) {
+        const ms = new MeetingSeries(aMeetingSeriesID);
+        return ms.isPublic;
+    }
     
     hasViewRoleFor(aMeetingSeriesID) {
-        return (this.isInvitedTo(aMeetingSeriesID) /* or lower access role */ );
+        return (this.isInvitedTo(aMeetingSeriesID) || this.isPublic(aMeetingSeriesID) /* or lower access role */ );
     }
 
     currentRoleFor (aMeetingSeriesID) {

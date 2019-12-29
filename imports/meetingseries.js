@@ -47,7 +47,7 @@ export class MeetingSeries {
     static getAllVisibleIDsForUser (userId) {
         // we return an array with just a list of visible meeting series IDs
         return MeetingSeriesSchema
-            .find({visibleFor: {$in: [userId]}}, {_id:1})
+            .find({$or: [ {visibleFor: {$in: [userId]}}, {_id:1}, {isPublic: true} ]})
             .map(function(item){ return item._id; });
     }
 
@@ -118,6 +118,7 @@ export class MeetingSeries {
             date: formatDateISO8601(newMinutesDate),
             topics: topics,
             visibleFor: this.visibleFor,             // freshly created minutes inherit visibility of their series
+            isPublic: this.isPublic,
             informedUsers: this.informedUsers       // freshly created minutes inherit informedUsers of their series
         });
 
@@ -281,7 +282,7 @@ export class MeetingSeries {
         this.visibleFor = newVisibleForArray;
 
         // sync visibility for *all* minutes (to allow publish & subscribe)
-        Minutes.syncVisibility(this._id, this.visibleFor);
+        Minutes.syncVisibility(this._id, this.visibleFor, this.isPublic);
 
         // sync informed only to *not finalized* minutes (do not change the past!)
         let lastMinutes = MinutesFinder.lastMinutesOfMeetingSeries(this);

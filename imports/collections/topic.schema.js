@@ -32,6 +32,7 @@ export const TopicSchema = SchemaClass.create({
         // visibleFor: array of user IDs; optional since it is only necessary for topics living in the
         // topics collection. Topics inside a minutes do not have this field
         visibleFor: {type: [String], validators: [{type: 'meteorId'}], optional: true},
+        isPublic: {type: Boolean, default: false}
     }
 });
 
@@ -41,7 +42,7 @@ if (Meteor.isServer) {
             ? {parentId: meetingSeriesIdOrArray } // we have an ID here
             : {parentId: {$in: meetingSeriesIdOrArray} };  //we have an whole array of ids here
         return TopicSchema.find({
-            $and: [ {visibleFor: {$in: [this.userId]}}, parentIdSelector ]
+            $and: [ {$or: [{visibleFor: {$in: [this.userId]}}, {isPublic: true}]}, parentIdSelector ]
         });
     });
 

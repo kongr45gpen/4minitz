@@ -17,6 +17,7 @@ export const MeetingSeriesSchema = SchemaClass.create({
     fields: {
         project: {type: String},
         name: {type: String},
+        isPublic: {type: Boolean, default: false},
         createdAt: {type: Date},
         visibleFor: {type: [String], validators: [{type: 'meteorId'}]},
         // element may be userID or EMail address

@@ -12,11 +12,11 @@ if (Meteor.isServer) {
     Meteor.publish('minutes', function minutesPublication(meetingSeriesId, minuteId) { 
         if (minuteId) { 
             return MinutesSchema.find( 
-                { $and: [{visibleFor: {$in: [this.userId]}}, {_id: minuteId}]}); 
+                { $and: [{$or: [{visibleFor: {$in: [this.userId]}}, {isPublic: true}]}, {_id: minuteId}]}); 
         }
         if (meetingSeriesId) { 
             return MinutesSchema.find( 
-                { $and: [{visibleFor: {$in: [this.userId]}}, {meetingSeries_id: meetingSeriesId}]}); 
+                { $and: [{$or: [{visibleFor: {$in: [this.userId]}}, {isPublic: true}]}, {meetingSeries_id: meetingSeriesId}]}); 
         } 
         return this.ready(); 
     }); 
@@ -224,12 +224,12 @@ Meteor.methods({
         );
     },
 
-    'minutes.syncVisibilityAndParticipants'(parentSeriesID, visibleForArray) {
+    'minutes.syncVisibilityAndParticipants'(parentSeriesID, visibleForArray, isPublicBool) {
         check(parentSeriesID, String);
         let userRoles = new UserRoles(Meteor.userId());
         if (userRoles.isModeratorOf(parentSeriesID)) {
-            Minutes.updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(parentSeriesID, visibleForArray);
-            TopicSchema.update({parentId: parentSeriesID}, {$set: {visibleFor: visibleForArray}}, {multi: true});
+            Minutes.updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(parentSeriesID, visibleForArray, isPublicBool);
+            TopicSchema.update({parentId: parentSeriesID}, {$set: {visibleFor: visibleForArray, isPublic: isPublicBool}}, {multi: true});
         } else {
             throw new Meteor.Error('Cannot sync visibility of minutes', 'You are not moderator of the parent meeting series.');
         }

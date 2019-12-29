@@ -187,7 +187,7 @@ Meteor.methods({
         MeetingSeriesSchema.update(meetingSeries_id, {$set: {visibleFor: visibleForArray}});
 
         // 3rd.: sync "visibleFor" to minutes that have this meeting series as parent
-        Minutes.updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(meetingSeries_id, visibleForArray);
+        Minutes.updateVisibleForAndParticipantsForAllMinutesOfMeetingSeries(meetingSeries_id, visibleForArray, ms.isPublic);
     },
     
         

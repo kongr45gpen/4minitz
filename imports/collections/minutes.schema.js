@@ -35,6 +35,7 @@ export const MinutesSchema = SchemaClass.create({
         agendaSentAt: {type: Date, optional: true},
         // array of user IDs
         visibleFor: {type: [String], validators: [{type: 'meteorId'}]},
+        isPublic: {type: Boolean, default: false},
         // array of user IDs
         informedUsers: {type: [String], validators: [{type: 'meteorId'}], default: []},
         participants: {type: [ParticipantsSchema], default: []},

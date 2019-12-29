@@ -198,6 +198,7 @@ Template.meetingSeriesEdit.events({
 
         let aProject = tmpl.find('#id_meetingproject').value;
         let aName = tmpl.find('#id_meetingname').value;
+        let aPublic = tmpl.find('#id_meetingpublic').checked;
         let modWantsNotifyOnRoleChange = tmpl.find('#checkBoxRoleChange').checked;
 
         // validate form and show errors - necessary for browsers which do not support form-validation
@@ -240,6 +241,7 @@ Template.meetingSeriesEdit.events({
         const ms = new MeetingSeries(meetingSeriesId);
         ms.project = aProject;
         ms.name = aName;
+        ms.isPublic = aPublic;
         ms.setVisibleAndInformedUsers(allVisiblesArray,allInformedArray);   // this also removes the roles of removed users
         ms.save();
         IsEditedService.removeIsEditedMeetingSerie(ms._id, true);
