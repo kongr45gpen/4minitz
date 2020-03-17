@@ -21,6 +21,8 @@ export class InfoItemsMailHandler extends TopicItemsMailHandler {
     _sendMail(mailData) {
         if (mailData === undefined)
             mailData = DocumentGeneration.getDocumentData(this);
+        // TODO: Fix
+        mailData = "Under construction..."
         let mailSubject = this._getSubject();
 
         DocumentGeneration.generateResponsibleStringsForTopic(this);
@@ -28,7 +30,7 @@ export class InfoItemsMailHandler extends TopicItemsMailHandler {
         this._buildMail(
             mailSubject,
             mailData
-        );        
+        );
     }
 
     _userArrayToString(users) {

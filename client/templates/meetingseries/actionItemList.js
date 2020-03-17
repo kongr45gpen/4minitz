@@ -14,6 +14,7 @@ import { createUserIdsReceiver } from './helpers/tabFilterDatabaseOperations';
 import { MeetingSeries } from '/imports/meetingseries';
 import { Meteor } from 'meteor/meteor';
 import { TopicSchema } from '/imports/collections/topic.schema';
+import {Topic} from "../../../imports/topic";
 
 const FILTERS = [
     {text: 'Open Action Items', value: 'is:action is:open'},
@@ -51,7 +52,8 @@ Template.actionItemList.helpers({
 
         let topics = TopicSchema.getCollection().find().fetch();
         topics.forEach(topic => {
-            let actionItems = topic.infoItems.filter(item => item.itemType === 'actionItem'
+            let ttopic = new Topic(topic.parentseries_id, topic._id);
+            let actionItems = ttopic.getInfoItems().filter(item => item.itemType === 'actionItem'
                 && item.responsibles && item.responsibles.includes(Meteor.userId()));
             actionItems.forEach(actionItem => {
                 myActionItems.push(actionItem);

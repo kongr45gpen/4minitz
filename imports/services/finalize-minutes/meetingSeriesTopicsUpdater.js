@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { TopicSchema } from '/imports/collections/topic.schema';
 import {TopicsFinder} from '../topicsFinder';
 import {Minutes} from '../../minutes';
+import {Topic} from "../../topic";
 
 export class MeetingSeriesTopicsUpdater {
 
@@ -21,7 +22,8 @@ export class MeetingSeriesTopicsUpdater {
         });
         TopicsFinder.allTopicsIdentifiedById(topicIds).forEach((topicDoc) => {
             topicDoc.isNew = false;
-            topicDoc.infoItems.forEach(itemDoc => {
+            let ttopic = new Topic(topicDoc.parentseries_id, topicDoc._id);
+            ttopic.getInfoItems().forEach(itemDoc => {
                 itemDoc.isNew = false;
                 itemDoc.details = itemDoc.details || [];
                 itemDoc.details.forEach(detail => {

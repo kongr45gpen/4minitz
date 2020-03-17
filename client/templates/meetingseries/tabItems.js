@@ -10,6 +10,7 @@ import { TopicInfoItemListContext } from '../topic/topicInfoItemList';
 
 import { createLabelIdsReceiver } from './helpers/tabFilterDatabaseOperations';
 import { createUserIdsReceiver } from './helpers/tabFilterDatabaseOperations';
+import {Topic} from "../../../imports/topic";
 
 export class TabItemsConfig {
     constructor (topics, parentMeetingSeriesId) {
@@ -57,7 +58,8 @@ Template.tabItems.helpers({
 
         const items = tmpl.data.topics.reduce(
             (acc, topic) => {
-                return acc.concat(topic.infoItems.map((item) => {
+                let ttopic = new Topic(topic.parentseries_id, topic._id);
+                return acc.concat(ttopic.getInfoItems().map((item) => {
                     item.parentTopicId = topic._id;
                     return item;
                 }));

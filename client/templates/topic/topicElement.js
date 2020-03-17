@@ -88,8 +88,9 @@ Template.topicElement.helpers({
     getData() {
         const data = Template.instance().data;
         const parentElement = (data.minutesID) ? data.minutesID : data.parentMeetingSeriesId;
+        const topic = new Topic(data.topic.createdInMinute, data.topic._id);
         return TopicInfoItemListContext.createContextForItemsOfOneTopic(
-            data.topic.infoItems,
+            topic.getInfoItems(),
             !data.isEditable,
             parentElement,
             data.topic._id
@@ -99,15 +100,15 @@ Template.topicElement.helpers({
     classForEdit() {
         return this.isEditable ? 'btnEditTopic' : '';
     },
-    
+
     classForSkippedTopics() {
         return this.topic.isSkipped ? 'strikethrough' : '';
     },
-    
+
     cursorForEdit() {
         return this.isEditable ? 'pointer' : '';
     },
-    
+
     showMenu() {
         return ((this.isEditable) || // Context: Current non-finalized Minute
             (!this.minutesID && !this.topic.isOpen && new MeetingSeries(this.parentMeetingSeriesId).isCurrentUserModerator())); // Context: Closed Topic within MeetingSeries, user is moderator;
@@ -244,7 +245,7 @@ Template.topicElement.events({
             aTopic.save().catch(onError);
         });
     },
-    
+
     'click .js-toggle-skipped'(evt) {
         editTopicEventHandler(evt, this, (aTopic) => {
             aTopic.toggleSkip();
@@ -350,7 +351,7 @@ Template.topicElement.events({
         collapseState[this.topic._id] = ! collapseState[this.topic._id];
         Session.set('minutesedit.collapsetopics.'+_minutesId, collapseState);
     },
-    
+
     'click #btnReopenTopic'(evt) {
         evt.preventDefault();
         let reopenTopic = () => {
@@ -364,6 +365,6 @@ Template.topicElement.events({
                 topicSubject: Template.instance().data.topic.subject
             },
             'Re-open'
-        ).show(); 
+        ).show();
     }
 });

@@ -1,3 +1,5 @@
+import {Topic} from "../../topic";
+
 const fs = require('fs');
 const EJSON = require('mongodb-extended-json');
 let ExpImpTopics = require('./expImpTopics');
@@ -33,7 +35,8 @@ class ExpImpMinutes {
                                 top.responsibles && top.responsibles.map(resp => {  // topic-responsibles
                                     userIDs[resp] = 1;
                                 });
-                                top.infoItems && top.infoItems.map(item => {     // topic-actionitem-responsibles
+                                ttopic = new Topic(top.parentseries_id, top._id);
+                                ttopic.getInfoItems() && ttopic.getInfoItems().map(item => {     // topic-actionitem-responsibles
                                     item.responsibles && item.responsibles.map(resp => {
                                         userIDs[resp] = 1;
                                     });

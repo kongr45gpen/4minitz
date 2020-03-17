@@ -173,10 +173,11 @@ class QualityTestCase {
 
                 let actionItemWithoutResponsible = false;
                 minute.topics.forEach(topic => {
-                    topic.infoItems.forEach(infoItem => {
-                        if(infoItem.itemType === 'actionItem' && ((!infoItem.responsibles) || (infoItem.responsibles.length === 0)))
-                            actionItemWithoutResponsible = true;
-                    });
+                    // THIS IS WRONG
+                    // topic.infoItems.forEach(infoItem => {
+                    //     if(infoItem.itemType === 'actionItem' && ((!infoItem.responsibles) || (infoItem.responsibles.length === 0)))
+                    //         actionItemWithoutResponsible = true;
+                    // });
                 });
                 if(actionItemWithoutResponsible)
                     return 'At least one action item has no responsible';

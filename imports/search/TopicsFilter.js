@@ -26,6 +26,7 @@ export class TopicsFilter {
     }
 
     docMatchesSearchTokens(doc, searchTokens) {
+        return false;
         for (let i=0; i < searchTokens.length; i++) {
             let token = this._toUpper(searchTokens[i]);
             let subject = this._toUpper(doc.subject);
@@ -49,6 +50,8 @@ export class TopicsFilter {
 
 
     docMatchesLabelTokens(doc, labelTokens) {
+        // TODO: Temporary
+        return false;
         for (let i=0; i < labelTokens.length; i++) {
             let token = labelTokens[i];
             let hasMatchingInfoItems =
@@ -61,6 +64,8 @@ export class TopicsFilter {
     }
 
     docMatchesFilterTokens(doc, filterTokens) {
+        // TODO: Temporary
+
         for (let i=0; i < filterTokens.length; i++) {
             let filter = filterTokens[i];
 
@@ -119,6 +124,7 @@ export class TopicsFilter {
     }
 
     _docMatchesKeyword_HAS(doc, value) {
+        return false;
         switch (value) {
         case 'item':
             return doc.infoItems.length > 0;

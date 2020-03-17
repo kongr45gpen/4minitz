@@ -13,6 +13,8 @@ import { _ } from 'meteor/underscore';
 
 import './helpers/promisedMethods';
 import './collections/minutes_private';
+import {Label} from "./label";
+import {LabelResolver} from "./services/labelResolver";
 
 
 function resolveParentElement(parent) {
@@ -64,6 +66,8 @@ export class Topic {
      *                      or a topic object
      */
     constructor(parentElement, source) {
+        console.log("Hello, I am a topic");
+
         if (!parentElement || !source) {
             return;
         }
@@ -141,11 +145,11 @@ export class Topic {
     toggleRecurring() {
         this.getDocument().isRecurring = !this.isRecurring();
     }
-    
+
     isSkipped() {
         return this.getDocument().isSkipped;
     }
-    
+
     toggleSkip(forceOpenTopic = true) {
         this.getDocument().isSkipped = !this.isSkipped();
         if (forceOpenTopic) {
@@ -228,7 +232,29 @@ export class Topic {
     }
 
     getInfoItems() {
-        return this._topicDoc.infoItems;
+        // console.log(this.getLabelsRawArray());
+        // Get the labels
+        const labelIds = this.getLabelsRawArray();
+        const p = this._parentMinutes._id;
+        // noinspection JSCheckFunctionSignatures
+        const labels = LabelResolver.resolveLabels(labelIds, this._parentMinutes.meetingSeries_id);
+        let retr = true;
+        const userId = Meteor.userId();
+        const participants = this._parentMinutes.participants.map(pi => pi.userId);
+        labels.forEach(label => {
+            if (label.getName().toUpperCase() === "Confidential".toUpperCase() ) {
+                console.log("CONFIDENTIAL");
+                retr = false;
+                return false;
+            }
+        });
+        console.log(this._parentMinutes.participants, userId)
+        if (retr || participants.includes(userId)) {
+            return this._topicDoc.infoItems;
+        } else {
+            console.log("conf not shown");
+            return [];
+        }
     }
 
     getOnlyInfoItems() {
@@ -238,13 +264,13 @@ export class Topic {
     }
 
     getOnlyActionItems() {
-        return this._topicDoc.infoItems.filter((infoItemDoc) => {
+        return this.getInfoItems().filter((infoItemDoc) => {
             return InfoItem.isActionItem(infoItemDoc);
         });
     }
 
     getOpenActionItems() {
-        return this._topicDoc.infoItems.filter((infoItemDoc) => {
+        return this.getInfoItems().filter((infoItemDoc) => {
             return InfoItem.isActionItem(infoItemDoc) && infoItemDoc.isOpen;
         });
     }
@@ -258,6 +284,7 @@ export class Topic {
     }
 
     getSubject() {
+        console.log(this._topicDoc);
         return this._topicDoc.subject;
     }
 
