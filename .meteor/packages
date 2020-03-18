@@ -49,3 +49,4 @@ dynamic-import@0.3.0
 ostrio:files
 msavin:mongol
 ostrio:flow-router-extra
+service-configuration

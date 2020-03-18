@@ -22,7 +22,7 @@ export class MeetingSeriesTopicsUpdater {
         });
         TopicsFinder.allTopicsIdentifiedById(topicIds).forEach((topicDoc) => {
             topicDoc.isNew = false;
-            let ttopic = new Topic(topicDoc.parentseries_id, topicDoc._id);
+            let ttopic = new Topic(topicDoc.createdInMinute, topicDoc._id);
             ttopic.getInfoItems().forEach(itemDoc => {
                 itemDoc.isNew = false;
                 itemDoc.details = itemDoc.details || [];

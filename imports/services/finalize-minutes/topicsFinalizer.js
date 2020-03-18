@@ -1,7 +1,6 @@
 import {subElementsHelper} from '../../helpers/subElements';
 import {MeetingSeriesTopicsUpdater} from './meetingSeriesTopicsUpdater';
 import {MinutesFinder} from '../minutesFinder';
-import {Topic} from "../../topic";
 
 /**
  *
@@ -96,15 +95,13 @@ export class TopicsFinalizer {
         acceptingTopicDoc.updatedBy = resistantTopicDoc.updatedBy;
 
         // loop backwards through topic items and upsert them in the accepting one
-        let rt = new Topic(resistantTopicDoc.createdInMinute, resistantTopicDoc._id);
-        let at = new Topic(acceptingTopicDoc.createdInMinute, acceptingTopicDoc._id);
-        for (let i = rt.infoItems.length; i-- > 0;) {
-            let infoDoc = rt.infoItems[i];
+        for (let i = resistantTopicDoc.infoItems.length; i-- > 0;) {
+            let infoDoc = resistantTopicDoc.infoItems[i];
             let index = subElementsHelper.findIndexById(infoDoc._id, acceptingTopicDoc.infoItems);
             if (index === undefined) {
-                at.getInfoItems().unshift(infoDoc);
+                acceptingTopicDoc.infoItems.unshift(infoDoc);
             } else {
-                at.getInfoItems()[index] = infoDoc;
+                acceptingTopicDoc.infoItems[index] = infoDoc;
             }
         }
 
@@ -127,8 +124,7 @@ export class TopicsFinalizer {
     }
 
     static isTopicClosedAndHasNoOpenAIs(topicDoc) {
-        const tt = new Topic(topicDoc.createdInMinute, topicDoc._id);
-        const hasOpenActionItems = tt.getInfoItems().some(item => item.isOpen);
+        const hasOpenActionItems = topicDoc.infoItems.some(item => item.isOpen);
         return (!topicDoc.isOpen && !hasOpenActionItems && !topicDoc.isRecurring);
     }
 

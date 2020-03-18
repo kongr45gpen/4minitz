@@ -35,7 +35,7 @@ class ExpImpMinutes {
                                 top.responsibles && top.responsibles.map(resp => {  // topic-responsibles
                                     userIDs[resp] = 1;
                                 });
-                                ttopic = new Topic(top.parentseries_id, top._id);
+                                ttopic = new Topic(top.createdInMinute, top._id);
                                 ttopic.getInfoItems() && ttopic.getInfoItems().map(item => {     // topic-actionitem-responsibles
                                     item.responsibles && item.responsibles.map(resp => {
                                         userIDs[resp] = 1;
