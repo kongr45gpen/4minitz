@@ -66,8 +66,6 @@ export class Topic {
      *                      or a topic object
      */
     constructor(parentElement, source) {
-        console.log("Hello, I am a topic");
-
         if (!parentElement || !source) {
             return;
         }
@@ -232,7 +230,6 @@ export class Topic {
     }
 
     getInfoItems() {
-        // console.log(this.getLabelsRawArray());
         // Get the labels
         const labelIds = this.getLabelsRawArray();
         const p = this._parentMinutes._id;
@@ -243,16 +240,13 @@ export class Topic {
         const participants = this._parentMinutes.participants.map(pi => pi.userId);
         labels.forEach(label => {
             if (label.getName().toUpperCase() === "Confidential".toUpperCase() ) {
-                console.log("CONFIDENTIAL");
                 retr = false;
                 return false;
             }
         });
-        console.log(this._parentMinutes.participants, userId)
         if (retr || participants.includes(userId)) {
             return this._topicDoc.infoItems;
         } else {
-            console.log("conf not shown");
             return [];
         }
     }
@@ -284,7 +278,6 @@ export class Topic {
     }
 
     getSubject() {
-        console.log(this._topicDoc);
         return this._topicDoc.subject;
     }
 
