@@ -243,7 +243,11 @@ Template.topicInfoItemList.helpers({
 
     isExpanded(itemID) {
         let allItemsExpandedState = Template.instance().isItemExpanded.get();
-        return allItemsExpandedState[itemID];
+        if (allItemsExpandedState[itemID] === undefined) {
+            return true;
+        } else {
+            return allItemsExpandedState[itemID];
+        }
     },
 
     isActionItem: function(index) {
