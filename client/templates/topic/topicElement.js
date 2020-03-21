@@ -88,7 +88,7 @@ Template.topicElement.helpers({
     getData() {
         const data = Template.instance().data;
         const parentElement = (data.minutesID) ? data.minutesID : data.parentMeetingSeriesId;
-        const topic = new Topic(data.topic.createdInMinute, data.topic._id);
+        const topic = new Topic(parentElement, data.topic._id);
         return TopicInfoItemListContext.createContextForItemsOfOneTopic(
             topic.getInfoItems(),
             !data.isEditable,
