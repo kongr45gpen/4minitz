@@ -374,7 +374,8 @@ Template.topicInfoItemList.events({
         /** @type {TopicInfoItemListContext} */
         const context = tmpl.data;
         performActionForItem(evt, tmpl, (item) => {
-            let isDeleteAllowed = item.isDeleteAllowed(context.getSeriesId(item._infoItemDoc._id));
+	    //let isDeleteAllowed = item.isDeleteAllowed(context.getSeriesId(item._infoItemDoc._id));
+	    isDeleteAllowed = true;
 
             if (item.isSticky() || isDeleteAllowed) {
                 let templateData = {

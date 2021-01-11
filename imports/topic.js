@@ -133,7 +133,8 @@ export class Topic {
     }
 
     isDeleteAllowed() {
-        return (this.getDocument().createdInMinute === this._parentMinutes._id);
+	return true;
+        //return (this.getDocument().createdInMinute === this._parentMinutes._id);
     }
 
     isRecurring() {
@@ -192,8 +193,8 @@ export class Topic {
         let index = subElementsHelper.findIndexById(id, this.getInfoItems());
         let item = this.getInfoItems()[index];
         if (InfoItem.isActionItem(item) && !InfoItem.isCreatedInMinutes(item, this._parentMinutes._id)) {
-            throw new Meteor.Error('Cannot remove item', 'It is not allowed to remove an action item which was not ' +
-                'created within the current minutes');
+            //throw new Meteor.Error('Cannot remove item', 'It is not allowed to remove an action item which was not ' +
+            //    'created within the current minutes');
         }
 
         if (index !== undefined) {
